@@ -1,0 +1,36 @@
+一、搭建工程
+    1. 添加mybatis的相关Jar包
+    2. 自动生成sql的jar包：pngen.jar, 并测试,并不完善，不过可以使用
+       也就是说在我们创建一个项目的实体类的时候，可以定义好项目的实体类，然后在生成sql语句的时候可以借助这个jar包
+       生成sql语句，但是还是我们来修改
+    3. 下来研究下mybatis-generator的作用
+       发现这个插件可以从model生成单表的CRUD的mapper.xml
+       但是mybatis-plugin这个插件只是生成了mapper的resultMap，并没有生成CURD语句，但是他生成了service和controller比较全面
+       两者可以混合使用，
+       待验证的是：对于extend的属性如何处理
+
+       或者增强一个既能生成比较全面的CRUD又能生成series和controller
+
+       在使用generator的时候暂时没发现不覆盖已经生成完毕的文件的方法，这里采取一个折中的方式，
+       暂时不要把生成的文件加载到正式的目录中，可以生成在test的包下，然后再修改
+
+    4. 可以参考xfb的Fremaker 或者  <!--一种基于Java的模板引擎--> <velocity.version>1.7</velocity.version>
+
+二、mybatis的缓存和整合ehcache
+
+三、mybatis的缓存和redis的缓存的比较
+
+四、对于单表的CRUD不用操心，只关心业务逻辑
+    1. 研究学习是如何进行不用配置CRUD的sql，从而动态生成sql，然后进行单表操作
+    2. 也就是对于这个BaseMapper类中的方法，不用再写sql进行操作了，而是进行动态的使用
+        同理不用配置xml，这就需要创建新的类来代替xml的配置，这里的Wrapper相关类就是这么产生的
+        学习Wrapper相关的类
+
+
+
+五、mybatis的分页插件使用
+    1. SELECT id,title from article LIMIT 0,5;
+       SELECT id,title from article LIMIT 5,5;
+       说明：第一个数  <  查询结果  <= 按照第二个数显示多少条数据
+    2. mybatis的分页：RowBounds是用来做分页的. offset是当前条数  limit 是当前页显示多少条数据
+        物理分页当然就是我们在sql语句中指定limit和offset值
